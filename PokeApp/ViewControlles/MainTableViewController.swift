@@ -31,10 +31,19 @@ final class MainTableViewController: UITableViewController {
             case .success(let pokemon):
                 pokemons = pokemon.results ?? []
                 tableView.reloadData()
-            case .failure(_):
-                print("error")
+            case .failure(let error):
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.showAlert(title: "Ошибка", message: error.localizedDescription)
+                }
             }
         }
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
     }
 }
 
